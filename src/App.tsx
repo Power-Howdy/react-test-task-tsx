@@ -6,7 +6,6 @@ import PasswordReference from './components/PasswordReference';
 import Review from './components/Review';
 import validator from 'validator';
 import { nanoid } from "nanoid";
-import { createLoopVariable } from "typescript";
 
 interface Errors {
   name: string;
@@ -28,74 +27,43 @@ interface UserData {
 function App(): JSX.Element {
   const [step, setStep] = useState<number>(0);
   const [userData, setUserData] = useState<UserData>({
-    
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    password1: '',
+    password2: '',
   })
   const [errors, setErrors] = useState<Errors>({
     name: 'Enter name, please',
     email: 'Enter email, please',
-    password: '',
     phone: 'Enter phone number, please',
     country: 'Select your country, please.',
+    password: '',
   });
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [password1, setPassword1] = useState<string>("");
-  const [password2, setPassword2] = useState<string>("");
-  const [isError, setIsError] = useState<boolean>(true);
-  const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-  const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(event.target.value);
-  };
-  const handleChangePassword2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword2(event.target.value);
-  };
-  const handleChangePassword1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword1(event.target.value);
-  };
-  const handleChangeCountry = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setCountry(event.target.value);
-  };
+  
   const handleChange = (argment: any) => (event: any) => {
-    switch(argment){
-      case 'email':
-        setEmail(event.target.value);
-        break;
-      case 'name':
-        break;
-      case 'phone':
-        break;
-      case 'country':
-        break;
-      case 'name':
-        break;
-    }
+    setUserData({...userData, [argment]: event.target.value});
   }
   const validateForm1 = () => {
     let ne = {...errors};
-    if (name === '') {
+    if (userData.name === '') {
       ne.name= 'Enter Name please';
     } else {
       ne.name ='' ;
     }
-    if (validator.isEmail(email) !== true) {
+    if (validator.isEmail(userData.email) !== true) {
       ne.email = 'Email is not valid';
     } else {
       ne.email =  '' ;
     }
-    if (validator.isMobilePhone(phone) !== true) {
+    if (validator.isMobilePhone(userData.phone) !== true) {
       ne.phone = 'Phone number is not valid';
     } else {
       ne.phone = '';
     }
 
-    if (country === '') {
+    if (userData.country === '') {
       ne.country = 'Please select your country.';
     } else {
       ne.country = '';
@@ -121,19 +89,19 @@ function App(): JSX.Element {
 
   useEffect(() => {
     validateForm1();
-  }, [name, email, country, phone]);
+  }, [userData]);
 
   useEffect(() => {
     validatePasswords();
-  }, [password1, password2]);
+  }, [userData]);
 
   const validatePasswords = () => {
     if (step !== 1) {
       return;
     }
-    if (password1 !== password2) {
+    if (userData.password1 !== userData.password2) {
       setErrors({ ...errors, password: 'Passwords do not match' });
-    } else if (password1 === '') {
+    } else if (userData.password1 === '') {
       setErrors({ ...errors, password: 'Enter password' });
     } else {
       setErrors({ ...errors, password: '' });
@@ -182,27 +150,18 @@ function App(): JSX.Element {
           {step === 0 && (
             <InitialData
               error={errors}
-              name={name}
-              email={email}
-              phone={phone}
-              country={country}
+              userData={userData}
               handleChange={handleChange}
-              handleChangeCountry={handleChangeCountry}
-              handleChangeEmail={handleChangeEmail}
-              handleChangeName={handleChangeName}
-              handleChangePhone={handleChangePhone}
             />
           )}
           {step === 1 && (
             <PasswordReference
               error={errors}
-              password1={password1}
-              password2={password2}
-              handleChangePassword1={handleChangePassword1}
-              handleChangePassword2={handleChangePassword2}
+              userData={userData}
+              handleChange={handleChange}
             />
           )}
-          {step === 2 && <Review name={name} country={country} phone={phone} />}
+          {step === 2 && <Review userData={userData} />}
           <div className="d-grid gap-2">
             <Button disabled={isError} id="btn-start-mine" onClick={changeStep}>
               {step < 2 ? 'Continue' : 'Done'}
