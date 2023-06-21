@@ -1,3 +1,5 @@
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,3 +13,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+input, button {
+  border-radius: 0px !important;
+}
+
+#btn-start-mine {
+  background-color: #fff;
+  color: #817ca5;
+  margin-top: 50px;
+  width: 100%;
+  font-size: 30px;
+  border: none;
+}
+.error {
+  color: red;
+}
+
+#btn-start-mine:hover {
+  /* background-color: #dad3d3; */
+  background-color: #817ca5;
+  color: white;
+  border: solid 1px white;
+}
+#btn-start-mine:disabled {
+  border: none;
+}
+
