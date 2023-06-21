@@ -41,6 +41,7 @@ function App(): JSX.Element {
     country: 'Select your country, please.',
     password: '',
   });
+  const [isError, setIsError] = useState<boolean>(true);
   
   const handleChange = (argment: any) => (event: any) => {
     setUserData({...userData, [argment]: event.target.value});
