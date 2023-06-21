@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import './App.css';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Row, Col } from 'react-bootstrap';
 import InitialData from './components/InitialData';
 import PasswordReference from './components/PasswordReference';
 import Review from './components/Review';
@@ -10,7 +10,8 @@ import { nanoid } from "nanoid";
 interface Errors {
   name: string;
   email: string;
-  password: string;
+  password1: string;
+  password2: string;
   phone: string;
   country: string;
 }
@@ -39,24 +40,25 @@ function App(): JSX.Element {
     email: 'Enter email, please',
     phone: 'Enter phone number, please',
     country: 'Select your country, please.',
-    password: '',
+    password1: '',
+    password2: '',
   });
   const [isError, setIsError] = useState<boolean>(true);
-  
+
   const handleChange = (argment: any) => (event: any) => {
-    setUserData({...userData, [argment]: event.target.value});
+    setUserData({ ...userData, [argment]: event.target.value });
   }
   const validateForm1 = () => {
-    let ne = {...errors};
+    let ne = { ...errors };
     if (userData.name === '') {
-      ne.name= 'Enter Name please';
+      ne.name = 'Enter Name please';
     } else {
-      ne.name ='' ;
+      ne.name = '';
     }
     if (validator.isEmail(userData.email) !== true) {
       ne.email = 'Email is not valid';
     } else {
-      ne.email =  '' ;
+      ne.email = '';
     }
     if (validator.isMobilePhone(userData.phone) !== true) {
       ne.phone = 'Phone number is not valid';
@@ -68,7 +70,7 @@ function App(): JSX.Element {
       ne.country = 'Please select your country.';
     } else {
       ne.country = '';
-    }    
+    }
     setErrors(ne);
   };
 
@@ -78,15 +80,15 @@ function App(): JSX.Element {
       errors.email !== "" ||
       errors.phone !== "" ||
       errors.country !== "" ||
-      errors.password !== ""
+      errors.password1 !== "" ||
+      errors.password2 !== ""
     ) {
       setIsError(true);
     } else {
       setIsError(false); // set isError as false when there are no errors
     }
-    console.log('errors changed', errors);
   }, [errors]); // add errors as dependency here
-// }, [errors.name, errors.email, errors.country, errors.phone, errors.password]); // add errors as dependency here
+  // }, [errors.name, errors.email, errors.country, errors.phone, errors.password]); // add errors as dependency here
 
   useEffect(() => {
     validateForm1();
@@ -100,13 +102,18 @@ function App(): JSX.Element {
     if (step !== 1) {
       return;
     }
-    if (userData.password1 !== userData.password2) {
-      setErrors({ ...errors, password: 'Passwords do not match' });
-    } else if (userData.password1 === '') {
-      setErrors({ ...errors, password: 'Enter password' });
+    let tmp = { ...errors };
+    if (userData.password1.length < 6) {
+      tmp.password1 = 'Password must contain 6 or more characters.'
     } else {
-      setErrors({ ...errors, password: '' });
+      tmp.password1 = ''
     }
+    if (userData.password1 !== userData.password2) {
+      tmp.password2 = 'Passwords do not match';
+    } else {
+      tmp.password2 = '';
+    }
+    setErrors(tmp);
   };
 
   const changeStep = () => {
@@ -130,8 +137,8 @@ function App(): JSX.Element {
   const stepsText = ["Initial Info", "Password Screen", "Review"];
 
   return (
-    <div className="container pt-5">
-      <div className="position-fixed left-1 top-1">
+    <div className="container pt-1">
+      <div className="custom_stepper position-fixed left-1" style={{ top: 100 }}>
         <ul>
           {
             stepsText.map(text => (
@@ -146,30 +153,37 @@ function App(): JSX.Element {
         <h1>Super Test Form</h1>
         <h3 style={{ color: "gray" }}>{stepsText[step]}</h3>
       </div>
-      <Card style={{ backgroundColor: "#817ca5", color: "#fff", width: '50%', margin: "auto" }}>
-        <Card.Body>
-          {step === 0 && (
-            <InitialData
-              error={errors}
-              userData={userData}
-              handleChange={handleChange}
-            />
-          )}
-          {step === 1 && (
-            <PasswordReference
-              error={errors}
-              userData={userData}
-              handleChange={handleChange}
-            />
-          )}
-          {step === 2 && <Review userData={userData} />}
-          <div className="d-grid gap-2">
-            <Button disabled={isError} id="btn-start-mine" onClick={changeStep}>
-              {step < 2 ? 'Continue' : 'Done'}
-            </Button>
-          </div>
-        </Card.Body>
-      </Card>
+      <Row>
+        <Col></Col>
+        <Col xs='10' sm='8' md='6'>
+          <Card style={{ backgroundColor: "#817ca5", color: "#fff", width: '100%', margin: "auto", borderRadius: 20 }}>
+            <Card.Body className="py-4">
+              {step === 0 && (
+                <InitialData
+                  error={errors}
+                  userData={userData}
+                  handleChange={handleChange}
+                />
+              )}
+              {step === 1 && (
+                <PasswordReference
+                  error={errors}
+                  userData={userData}
+                  handleChange={handleChange}
+                />
+              )}
+              {step === 2 && <Review userData={userData} />}
+              <div className="d-grid gap-2">
+                <Button disabled={isError} id="btn-start-mine" onClick={changeStep}>
+                  {step < 2 ? 'Continue' : 'Complete'}
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col></Col>
+      </Row>
+
     </div>
   );
 }

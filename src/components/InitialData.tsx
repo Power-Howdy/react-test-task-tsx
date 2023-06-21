@@ -31,23 +31,29 @@ const InitialData: React.FC<Props> = ({
   return (
     <div>
       <Form.Group className="mb-3" controlId="username.ControlInput1">
-        <Form.Label>User Name</Form.Label>
-        <Form.Control size="lg" value={userData.name} onChange={handleChange("name")} type="text" placeholder="User Name" />
-        {error.name !== '' && <span className="error">{error.name}</span>}
+        <Form.Label className='mb-0 label-custom'>Username</Form.Label>
+        <Form.Control value={userData.name} onChange={handleChange("name")} type="text" placeholder="User Name" isInvalid={error.name !== ''} isValid={error.name === ''} />
+        <Form.Control.Feedback type={error.name !==''?"invalid":'valid'}>
+            {error.name !==''?error.name:<>&nbsp;</>}
+        </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control size="lg" value={userData.email} onChange={handleChange("email")} type="email" placeholder="name@example.com" />
-        {error.email !== '' && <span className="error">{error.email}</span>}
+        <Form.Label className='mb-0 label-custom'>Email address</Form.Label>
+        <Form.Control value={userData.email} onChange={handleChange("email")} type="email" placeholder="name@example.com" isInvalid={error.email !== ''} isValid={error.email === ''} />
+        <Form.Control.Feedback type={error.email !==''?"invalid":'valid'}>
+            {error.email !== ''? error.email: <>&nbsp;</>}
+        </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="mb-3" controlId="phone.ControlInput1">
-        <Form.Label>Phone Number</Form.Label>
-        <Form.Control size="lg" value={userData.phone} onChange={handleChange("phone")} type="tel" placeholder="Phone number" />
-        {error.phone !== '' && <span className="error">{error.phone}</span>}
+        <Form.Label className='mb-0 label-custom'>Phone Number</Form.Label>
+        <Form.Control isInvalid={error.phone !== ''} isValid={error.phone === ''} value={userData.phone} onChange={handleChange("phone")} type="tel" placeholder="Phone number" />
+        <Form.Control.Feedback type={error.phone !==''?"invalid":'valid'}>
+            {error.phone !== ''?error.phone : <>&nbsp;</>}
+        </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="mb-3" controlId="country.ControlInput1">
-        <Form.Label>Country</Form.Label>
-        <Form.Select size="lg" value={userData.country} onChange={handleChange("country")} aria-label="Default select example">
+        <Form.Label className='mb-0 label-custom'>Country</Form.Label>
+        <Form.Select style={{ borderRadius: 0}} isInvalid={error.country !== ''} isValid={error.country === ''} value={userData.country} onChange={handleChange("country")} aria-label="Default select example">
           <option>Select Country</option>
           {countries.map((item) => (
             <option key={nanoid()} value={item.value}>
@@ -55,7 +61,9 @@ const InitialData: React.FC<Props> = ({
             </option>
           ))}
         </Form.Select>
-        {error.country !== '' && <span className="error">{error.country}</span>}
+        <Form.Control.Feedback type={error.country !==''?"invalid":'valid'}>
+            {error.country !== '' ? error.country : <>&nbsp;</>}
+        </Form.Control.Feedback>
       </Form.Group>
     </div>
   );

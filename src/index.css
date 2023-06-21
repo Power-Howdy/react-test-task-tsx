@@ -1,4 +1,6 @@
-
+* {
+  font-family: 'Inter' !important;
+}
 
 body {
   margin: 0;
@@ -18,10 +20,14 @@ input, button {
   border-radius: 0px !important;
 }
 
+.label-custom {
+  color: #CECAEB;
+}
+
 #btn-start-mine {
   background-color: #fff;
   color: #817ca5;
-  margin-top: 50px;
+  margin-top: 15px;
   width: 100%;
   font-size: 30px;
   border: none;
@@ -38,5 +44,18 @@ input, button {
 }
 #btn-start-mine:disabled {
   border: none;
+  background-color: #A39FC1;
 }
+
+
+
+
+
+@media (max-width: 600px) { 
+  .custom_stepper {
+    display: none;
+  }
+ }
+
+
 

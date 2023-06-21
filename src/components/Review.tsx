@@ -16,16 +16,16 @@ const Review: React.FC<Props> = ({ userData }) => {
   return (
     <div className="fs-5 m-3">
       <Row>
-        <Col xs={2}>User Name</Col>
-        <Col xs={10}>{userData.name}</Col>
+        <Col xs={6} className='label-custom '>User Name</Col>
+        <Col xs={6} style={{ textAlign: 'right'}}>{userData.name}</Col>
       </Row>
       <Row>
-        <Col xs={2}>Phone Number</Col>
-        <Col xs={10}>{userData.phone}</Col>
+        <Col xs={6}  className='label-custom '>Phone Number</Col>
+        <Col xs={6} style={{ textAlign: 'right'}}>{userData.phone}</Col>
       </Row>
       <Row>
-        <Col xs={2}>Country</Col>
-        <Col xs={10}>{userData.country}</Col>
+        <Col xs={6} className='label-custom '>Country</Col>
+        <Col xs={6} style={{ textAlign: 'right'}}>{userData.country}</Col>
       </Row>
     </div>
   );
